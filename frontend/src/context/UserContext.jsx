@@ -9,7 +9,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://3.12.166.13:3000/current_user', { withCredentials: true });
+        const res = await axios.get('http://chess2650.com:3000/current_user', { withCredentials: true });
         if(res)
           setUser(res.data.username);
       }

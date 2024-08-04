@@ -15,9 +15,9 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post('http://3.12.166.13:3000/login', formData, { withCredentials: true });
+      const res = await axios.post('http://chess2650.com:3000/login', formData, { withCredentials: true });
       setUser({ username: res.data.user.name }); // Set only necessary properties
-      window.location.href = 'http://3.12.166.13/';
+      window.location.href = 'http://chess2650.com/';
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message);
@@ -28,7 +28,7 @@ const Login = () => {
   };
 
   const googleAuth = () => {
-    window.open('http://3.12.166.13:3000/login/federated/google', '_self');
+    window.open('http://chess2650.com:3000/login/federated/google', '_self');
   };
 
   return (

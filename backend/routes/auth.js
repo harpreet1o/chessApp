@@ -14,7 +14,7 @@ const cors=config.corsOrigin;
 passport.use(new GoogleStrategy({
   clientID: config.googleClientId,
   clientSecret: config.googleClientSecret,
-  callbackURL: 'http://3.12.166.13:3000/oauth2/redirect/google', // Ensure this matches your route
+  callbackURL: 'http://chess2650.com:3000/oauth2/redirect/google', // Ensure this matches your route
   scope: ['profile', 'email', 'openid']
 }, (accessToken, refreshToken, profile, cb) => {
   const newUser = {
@@ -134,7 +134,7 @@ router.get('/login/federated/google', (req, res, next) => {
           return res.status(500).json({ message: 'Internal server error.' });
         }
         if (user) {
-          res.redirect(`http://3.12.166.13`);
+          res.redirect(`http://chess2650.com`);
         }
         return next();
       });
@@ -146,11 +146,11 @@ router.get('/login/federated/google', (req, res, next) => {
 
 router.get('/oauth2/redirect/google', passport.authenticate('google', {
   session: false,
-  failureRedirect: 'http://3.12.166.13/login'
+  failureRedirect: 'http://chess2650.com/login'
 }), (req, res) => {
   const token = generateToken(req.user.id);
   res.cookie('token', token, { httpOnly: true, secure: false, same_Site: "none" });
-  res.redirect(`http://3.12.166.13`);
+  res.redirect(`http://chess2650.com`);
 });
 
 router.post('/logout', (req, res) => {

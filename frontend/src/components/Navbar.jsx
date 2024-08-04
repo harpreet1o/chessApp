@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://3.12.166.13:3000/logout', { withCredentials: true });
+      await axios.post('http://chess2650.com:3000/logout', { withCredentials: true });
       setUser(null);
       navigate('/login');
     } catch (err) {
