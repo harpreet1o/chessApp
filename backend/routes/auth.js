@@ -9,11 +9,12 @@ import { getGamesByUserId } from '../models/games.js';
 import config from '../config.js';
 
 const secretKeyJWT=config.secretKeyJWT;
+const cors=config.corsOrigin;
 
 passport.use(new GoogleStrategy({
   clientID: config.googleClientId,
   clientSecret: config.googleClientSecret,
-  callbackURL: 'http://localhost:3000/oauth2/redirect/google', // Ensure this matches your route
+  callbackURL: 'http://3.12.166.13:3000/oauth2/redirect/google', // Ensure this matches your route
   scope: ['profile', 'email', 'openid']
 }, (accessToken, refreshToken, profile, cb) => {
   const newUser = {
@@ -97,7 +98,7 @@ router.post('/register', (req, res) => {
         return res.status(500).json({ message: 'Internal server error.' });
       }
       const token = generateToken(user.id);
-      res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "none" });
+      res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "none" });
       res.status(201).json({ message: "created succesfully" });
     });
   });
@@ -116,7 +117,7 @@ router.post('/login', (req, res) => {
     }
 
     const token = generateToken(user.id);
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "none" });
+    res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "none" });
     res.json({ user, token });
   });
 });
@@ -133,7 +134,7 @@ router.get('/login/federated/google', (req, res, next) => {
           return res.status(500).json({ message: 'Internal server error.' });
         }
         if (user) {
-          res.redirect(`http://localhost`);
+          res.redirect(`http://3.12.166.13`);
         }
         return next();
       });
@@ -145,11 +146,11 @@ router.get('/login/federated/google', (req, res, next) => {
 
 router.get('/oauth2/redirect/google', passport.authenticate('google', {
   session: false,
-  failureRedirect: 'http://localhost/login'
+  failureRedirect: 'http://3.12.166.13/login'
 }), (req, res) => {
   const token = generateToken(req.user.id);
-  res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "none" });
-  res.redirect(`http://localhost`);
+  res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "none" });
+  res.redirect(`http://3.12.166.13`);
 });
 
 router.post('/logout', (req, res) => {
