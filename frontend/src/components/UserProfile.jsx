@@ -11,7 +11,7 @@ const UserProfile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get('http://3.12.166.13:3000/user/profile', { withCredentials: true });
+                const response = await axios.get('http://chess2650.com:3000/user/profile', { withCredentials: true });
                 setProfile(response.data);
                 setLoading(false);
             } catch (err) {
