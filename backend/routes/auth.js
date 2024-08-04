@@ -98,7 +98,7 @@ router.post('/register', (req, res) => {
         return res.status(500).json({ message: 'Internal server error.' });
       }
       const token = generateToken(user.id);
-      res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "none" });
+      res.cookie('token', token, { httpOnly: true, secure: false, same_Site: "none" });
       res.status(201).json({ message: "created succesfully" });
     });
   });
@@ -117,7 +117,7 @@ router.post('/login', (req, res) => {
     }
 
     const token = generateToken(user.id);
-    res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "none" });
+    res.cookie('token', token, { httpOnly: true, secure: false, same_Site: "none" });
     res.json({ user, token });
   });
 });
@@ -149,7 +149,7 @@ router.get('/oauth2/redirect/google', passport.authenticate('google', {
   failureRedirect: 'http://3.12.166.13/login'
 }), (req, res) => {
   const token = generateToken(req.user.id);
-  res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "none" });
+  res.cookie('token', token, { httpOnly: true, secure: false, same_Site: "none" });
   res.redirect(`http://3.12.166.13`);
 });
 
