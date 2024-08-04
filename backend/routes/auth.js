@@ -151,6 +151,7 @@ router.get('/oauth2/redirect/google', passport.authenticate('google', {
   const token = generateToken(req.user.id);
   res.cookie('token', token, { httpOnly: true, secure: false, same_Site: "none" });
   res.redirect(`http://3.12.166.13`);
+
 });
 
 router.post('/logout', (req, res) => {
