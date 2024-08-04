@@ -163,7 +163,11 @@ router.get('/oauth2/redirect/google', passport.authenticate('google', {
 
 router.post('/logout', (req, res) => {
 
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: false, // Set to true if using HTTPS
+    same_Site: 'None' // Ensure this matches the setting used when setting the cookie
+  });
   res.json({message:"removed succesfully"});
 
 });
