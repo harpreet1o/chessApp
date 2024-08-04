@@ -14,28 +14,31 @@ const cors=config.corsOrigin;
 passport.use(new GoogleStrategy({
   clientID: config.googleClientId,
   clientSecret: config.googleClientSecret,
-  callbackURL: 'http://chess2650.com:3000/oauth2/redirect/google', // Ensure this matches your route
+  callbackURL: 'http://chess2650.com:3000/oauth2/redirect/google',
   scope: ['profile', 'email', 'openid']
-}, (accessToken, refreshToken, profile, cb) => {
-  const newUser = {
-    id: profile.id,
-    email: profile.emails[0].value,
-    name: profile.displayName,
-  };
+}, async (accessToken, refreshToken, profile, cb) => {
+  try {
+    // Extract user details from profile
+    const newUser = {
+      id: profile.id,
+      email: profile.emails[0].value,
+      name: profile.displayName,
+    };
 
-  createUser(newUser, (err, user) => {
-    if (err && err.message.includes('UNIQUE constraint failed')) {
+    // Check if the user already exists
+    let user = await findUserById(profile.id);
+    if (user) {
       // User already exists
-      findUserById(profile.id, (err, existingUser) => {
-        if (err) return cb(err);
-        return cb(null, existingUser);
-      });
-    } else if (err) {
-      return cb(err);
-    } else {
       return cb(null, user);
     }
-  });
+
+    // Create a new user if not found
+    user = await createUser(newUser);
+    return cb(null, user);
+  } catch (err) {
+    console.error("Error in Google Strategy:", err);
+    return cb(err);
+  }
 }));
 
 passport.serializeUser((user, cb) => {
@@ -44,11 +47,15 @@ passport.serializeUser((user, cb) => {
   });
 });
 
-passport.deserializeUser((id, cb) => {
-  findUserById(id, (err, user) => {
-    cb(err, user);
-  });
+passport.deserializeUser(async (id, cb) => {
+  try {
+    const user = await findUserById(id);
+    cb(null, user);
+  } catch (err) {
+    cb(err);
+  }
 });
+
 
 const router = express.Router();
 
