@@ -12,7 +12,7 @@ const Games = () => {
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/user/games', { withCredentials: true });
+                const response = await axios.get('http://3.12.166.13:3000/user/games', { withCredentials: true });
                 setGames(response.data);
                 setLoading(false);
             } catch (error) {

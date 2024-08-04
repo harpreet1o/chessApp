@@ -38,7 +38,7 @@ export default function ChessBoard() {
 
   const socket = useMemo(() => {
     if (user) {
-      return io("http://localhost:3000", {
+      return io("http://3.12.166.13:3000", {
         withCredentials: true,
         query: { time, username: user } // Include username in query parameters
       });
